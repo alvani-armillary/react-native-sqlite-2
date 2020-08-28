@@ -23,6 +23,7 @@ import org.json.JSONException;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class RNSqlite2Module extends ReactContextBaseJavaModule {
 
@@ -81,12 +82,18 @@ public class RNSqlite2Module extends ReactContextBaseJavaModule {
           int numQueries = queries.size();
           SQLitePLuginResult[] results = new SQLitePLuginResult[numQueries];
           SQLiteDatabase db = getDatabase(dbName);
+          // Random rd = new Random();
 
           for (int i = 0; i < numQueries; i++) {
             ReadableArray sqlQuery = queries.getArray(i);
             String sql = sqlQuery.getString(0);
             ReadableArray queryArgs = sqlQuery.getArray(1);
             try {
+              // if (sql.equals("SELECT * FROM store") && rd.nextBoolean()) {
+              if (sql.equals("SELECT * FROM store")) {
+                Log.d("asdf", "Test error");
+                throw(new Exception("Test error"));
+              }
               if (isSelect(sql)) {
                 results[i] = doSelectInBackgroundAndPossiblyThrow(sql, queryArgs, db);
               } else { // update/insert/delete
